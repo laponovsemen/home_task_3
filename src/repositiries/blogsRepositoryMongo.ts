@@ -1,39 +1,28 @@
 import {BlogInputModelType, BlogViewModelType} from "../appTypes";
-import {client} from "./db";
+import {blogsCollection, client, postsCollection} from "./db";
 
-export let _blogs : Array<BlogViewModelType> = []
+let counter = 1
 
 //deleting all data in both databases
 export async function deleteAllBlogsData () {
-    client.db("homeWork3").collection("blogs").deleteMany({})
+    blogsCollection.deleteMany({})
 
 }
 //Read all blogs
 export async function getAllBlogs(): Promise<BlogViewModelType[]>{
-    return client.db("homeWork3").collection<BlogViewModelType>("blogs").find({}).toArray()
+    return client.db("forum").collection<BlogViewModelType>("blogs").find({}).toArray()
 }
 //create new blog according to BlogInputModelType
 export async function  createBlog(Object:BlogInputModelType): Promise<BlogViewModelType> {
     const newBlog = {
-        id : _blogs.length.toString(),
+        id: counter.toString(),
         name : Object.name,
         description : Object.description,
-        websiteUrl : Object.websiteUrl
+        websiteUrl : Object.websiteUrl,
+        createdAt: new Date().toISOString()
     }
-    _blogs.push(newBlog)
+    blogsCollection.insertOne({})
+    counter++
     return newBlog
 }
 //create new blog according to BlogViewModelType
-export async function  readBlogByID(idOfBlog : string) : Promise<BlogViewModelType> {
-    return _blogs.filter(n => n.id === idOfBlog)[0]
-}
-
-export async function  deleteBlogByID(idOfBlog : string) : Promise<boolean> {
-    for(let i =0; i < _blogs.length; i++){
-        if(_blogs[i].id === idOfBlog){
-            _blogs.splice(i,1)
-            return true
-        }
-    }
-    return false
-}

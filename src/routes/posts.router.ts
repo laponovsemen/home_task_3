@@ -1,25 +1,8 @@
 import {Request, Response, Router} from "express";
-import {
-    deleteAllBlogsData,
-} from "./repositiries/blogsRepositoryMongo";
-import {createPosts, deleteAllPostsData, getAllPosts, _posts, readPostByID} from "./repositiries/postsRepositoryMongo";
-import {
-    basicAuthGuardMiddleware,
-    createPostBodyValidator,
-} from "./middleware";
+import {_posts, createPosts, getAllPosts, readPostByID} from "../repositiries/postsRepositoryMongo";
+import {basicAuthGuardMiddleware, createPostBodyValidator} from "../middleware";
 
-
-export const startRouter = Router({})
-export const postsRouter = Router({})
-export const testingRouter = Router({})
-//BLOG  LOGIC
-startRouter.get("/", async (req: Request, res: Response) => {
-    res.status(200).send("API started")
-})
-
-
-
-//POST LOGIC
+export const postsRouter= Router({})
 postsRouter.get("/", async (req: Request, res: Response) => {
     const result = await getAllPosts()
     res.send(result).status(204)
@@ -63,10 +46,4 @@ postsRouter.delete("/:id", basicAuthGuardMiddleware,async (req: Request, res: Re
     } else {
         res.sendStatus(404)
     }
-})
-
-testingRouter.delete("/", async (req: Request, res: Response) => {
-    await deleteAllBlogsData()
-    await deleteAllPostsData()
-    res.sendStatus(204)
 })
