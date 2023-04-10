@@ -19,7 +19,7 @@ export async function  createBlog(Object:BlogInputModelType): Promise<BlogViewMo
         name : Object.name,
         description : Object.description,
         websiteUrl : Object.websiteUrl,
-        createdAt: new Date().toISOString()
+
     }
     blogsCollection.insertOne({})
     counter++
