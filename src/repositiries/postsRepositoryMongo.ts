@@ -1,14 +1,16 @@
 import { PostInputModelType, PostViewModelType} from "../appTypes";
-import {_blogs} from "./blogsRepositoryMongo";
 
-export let _posts : Array<PostViewModelType> = []
+import {blogsCollection} from "./db";
+
+
 
 export async function deleteAllPostsData (){
-    _posts = []
+    await blogsCollection.deleteMany({})
     return
 }
+/*
 export async function  getAllPosts(): Promise<PostViewModelType[]> {
-    return _posts
+    return db.client()
 }
 
 export async function  createPosts(Object:PostInputModelType): Promise<PostViewModelType> {
@@ -26,4 +28,4 @@ export async function  createPosts(Object:PostInputModelType): Promise<PostViewM
 
 export async function  readPostByID(idOfPost : string): Promise<PostViewModelType> {
     return _posts.filter(n => n.id === idOfPost)[0]
-}
+}*/
