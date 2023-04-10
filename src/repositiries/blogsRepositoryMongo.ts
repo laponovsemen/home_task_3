@@ -21,7 +21,7 @@ export async function  createBlog(Object:BlogInputModelType): Promise<BlogViewMo
         websiteUrl : Object.websiteUrl,
 
     }
-    blogsCollection.insertOne({})
+    blogsCollection.insertOne({newBlog})
     counter++
     return newBlog
 }
