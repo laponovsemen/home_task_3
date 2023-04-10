@@ -1,3 +1,4 @@
+/*
 import {BlogInputModelType, BlogViewModelType} from "../appTypes";
 
 export let blogs : Array<BlogViewModelType> = []
@@ -34,4 +35,4 @@ export async function  deleteBlogByID(idOfBlog : string) : Promise<boolean> {
         }
     }
     return false
-}
+*/

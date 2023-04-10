@@ -6,7 +6,7 @@ let counter = 1
 //deleting all data in both databases
 export async function deleteAllBlogsData () {
     blogsCollection.deleteMany({})
-
+    return
 }
 //Read all blogs
 export async function getAllBlogs(): Promise<BlogViewModelType[]>{
