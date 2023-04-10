@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {createBlog, deleteBlogByID, getAllBlogs, readBlogByID} from "../repositiries/blogsRepositoryMongo";
+import {createBlog, getAllBlogs} from "../repositiries/blogsRepositoryMongo";
 import {basicAuthGuardMiddleware, createBlogBodyValidator, readBlogIDValidator} from "../middleware";
 
 
@@ -17,6 +17,7 @@ blogsRouter.post("/",
         res.status(201).send(result)
     })
 
+/*
 blogsRouter.get("/:id", async (req: Request, res: Response) => {
     const result = await readBlogByID(req.params.id)
     if (result) {
@@ -46,4 +47,4 @@ blogsRouter.delete("/:id",basicAuthGuardMiddleware, async (req: Request, res: Re
     } else {
         res.sendStatus(404)
     }
-})
+})*/
