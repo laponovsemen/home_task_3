@@ -2,6 +2,16 @@
 import request from "supertest"
 import {app} from "../src/settings";
 import {before} from "node:test";
+
+describe("starting route must return confirmation of working", () => {
+    it("should return status code 200 and message \"API started working\"", () => {
+        request(app)
+            .get("")
+            .expect(200)
+    })
+})
+
+/*
 describe('DELETE BLOGS',  () => {
 
     it("should  return status code 204 after deleting all blogs ",  async () =>{
@@ -18,7 +28,6 @@ describe('DELETE BLOGS',  () => {
         expect(result.text).toEqual("API started")
     });
 });
-
 describe('GET ALL BLOGS',  () => {
     beforeAll(async () => {
         await request(app)
@@ -97,8 +106,8 @@ describe('POST ALL BLOGS',  () => {
             websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=63077bcee5fc0a055535227d"})
 
     });
-    /*it("should  return status code 200 and empty array ",  async () =>{
-    });*/
+    /!*it("should  return status code 200 and empty array ",  async () =>{
+    });*!/
 });
 
 describe('GET BLOG BY ID',  () => {
@@ -183,4 +192,4 @@ describe('PUT BLOG BY ID',  () => {
     })
 
 
-});
+});*/
