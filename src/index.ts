@@ -1,9 +1,10 @@
 import {app} from "./settings";
+import {runDb} from "./db";
 
-
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 export const startApp =  () => {
+    runDb()
     app.listen(port, () => {
         console.log(`app started on ${port} port`)
     })
