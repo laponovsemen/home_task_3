@@ -4,8 +4,8 @@ import {deleteAllPosts} from "../posts/postsRepositoryMongoDB";
 
 
 
-export function deleteAllInformation(req: Request, res: Response) {
-    deleteAllBlogs()
-    deleteAllPosts()
+export async function  deleteAllInformation(req: Request, res: Response) {
+    await deleteAllBlogs()
+    await deleteAllPosts()
     res.sendStatus(204)
 }
