@@ -1,4 +1,4 @@
-import {BlogViewModelType} from "../appTypes";
+import {BlogViewModelType, PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId} from "../common";
 import {client} from "../db";
@@ -26,18 +26,23 @@ export async function deletePostById(req: Request, res: Response) {
 
 
 export async function createPost(req: Request, res: Response) {
-    const newPost = {
-        id:	+(new Date()).toISOString(),
-        title: req.body.title,
-        shortDescription: req.body.shortDescription,
-        content: req.body.content,
-        blogId:	req.body.blogId,
-        blogName: await client.db("forum").collection("blogs").findOne({id : req.body.blogId}),
-        isMembership: false,
-        createdAt : new Date().toISOString()
+    const blog = await client.db("forum").collection("blogs").findOne({id : req.body.blogId})
+    if(blog) {
+        const newPost: PostViewModelType = {
+            id: (+(new Date())).toString(),
+            title: req.body.title,
+            shortDescription: req.body.shortDescription,
+            content: req.body.content,
+            blogId: req.body.blogId,
+            blogName: blog.name,
+            createdAt: new Date().toISOString()
+        }
+        await client.db("forum").collection("posts").insertOne(newPost)
+        res.status(201).send(newPost)
+    } else {
+        res.sendStatus(400)
     }
-    await client.db("forum").collection("posts").insertOne(newPost)
-    res.status(201).send(newPost)
+
 }
 
 export function updatePost(req: Request, res: Response) {

@@ -32,6 +32,5 @@ export type PostViewModelType = {
     content:	string,
     blogId:	string,
     blogName:	string,
-    isMembership: boolean,
     createdAt : string
 }
