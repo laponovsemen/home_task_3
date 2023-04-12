@@ -42,6 +42,7 @@ export async function createBlog(req: Request, res: Response) {
 export async function deleteAllBlogs() {
     await client.db("forum").collection("blogs").deleteMany({})
 
+
 }
 
 export async function updateBlog(req: Request, res: Response) {

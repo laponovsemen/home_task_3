@@ -1,5 +1,6 @@
 import {body, validationResult} from "express-validator";
 import {NextFunction, Request, Response} from "express";
+import {ValidationErrors} from "../common";
 
 const reg = /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/
 
@@ -30,14 +31,6 @@ export const BlogWebsiteUrlValidation = body("websiteUrl")
     .isLength({min : 1, max : 100})
     .withMessage("the length of websiteUrl field is more than 500 chars")
 
-export const BlogValidationErrors = (req: Request, res : Response, next : NextFunction) => {
-    const errors = validationResult(req)
-    console.log(errors, 'errors in middleware')
-    if(!errors.isEmpty()){
-        res.status(400).send({errors : errors.array()})
-    } else {
-        next()
-    }
-}
 
-export const CreateBlogValidation = [BlogNameValidation, BlogDescriptionValidation, BlogWebsiteUrlValidation, BlogValidationErrors]
+
+export const CreateBlogValidation = [BlogNameValidation, BlogDescriptionValidation, BlogWebsiteUrlValidation, ValidationErrors]
