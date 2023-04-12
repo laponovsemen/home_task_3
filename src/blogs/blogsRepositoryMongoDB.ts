@@ -7,14 +7,18 @@ import {blogs} from "./blogsRepository";
 
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
-    await res.status(200).send(client.db("forum").collection("blogs").find({id : req.params.id}))
-
+    if(req.params.id) {
+        await res.status(200).send(client.db("forum").collection("blogs").find({id: req.params.id}))
+    } else {
+        res.sendStatus(404)
+    }
 }
 export async function getAllBlogs(req: Request, res: Response) {
     await res.status(200).send(client.db("forum").collection("blogs").find({}))
 }
 
 export async function deleteBlogById(req: Request, res: Response) {
+
     await client.db("forum").collection("blogs").deleteOne({id: req.params.id})
     res.sendStatus(204)
 }
