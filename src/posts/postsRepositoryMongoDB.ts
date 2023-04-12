@@ -26,7 +26,8 @@ export async function deletePostById(req: Request, res: Response) {
 
 
 export async function createPost(req: Request, res: Response) {
-    await res.status(201).send(client.db("forum").collection("blogs").insertOne({id: }))
+    await res.status(201).send(client.db("forum").collection("blogs").insertOne({id:
+    }))
 }
 
 export function updatePost(req: Request, res: Response) {

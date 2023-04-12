@@ -7,35 +7,21 @@ import {blogs} from "./blogsRepository";
 
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
-    const blogId = req.params.id
-    if(blogId) {
-        await res.status(200).send(client.db("forum").collection("blogs").findOne({id: blogId}))
-    } else {
-        await res.sendStatus(404)
-    }
+    await res.status(200).send(client.db("forum").collection("blogs").find({id : req.params.id}))
 
 }
-export function getAllBlogs(req: Request, res: Response) {
-    res.status(200).send(_blogs)
+export async function getAllBlogs(req: Request, res: Response) {
+    await res.status(200).send(client.db("forum").collection("blogs").find({}))
 }
 
-export function deleteBlogById(req: Request, res: Response) {
-
+export async function deleteBlogById(req: Request, res: Response) {
+    await client.db("forum").collection("blogs").deleteOne({id: req.params.id})
 }
 
 
 
 export function createBlog(req: Request, res: Response) {
-    const newBlog = {
-        "id": createNewBlogId(blogs),
-        "name": req.body.name,
-        "description": req.body.description,
-        "websiteUrl": req.body.websiteUrl,
-        "createdAt": new Date().toISOString(),
-        "isMembership": true // always true
-    }
-    blogs.push(newBlog)
-    res.status(201).send(newBlog)
+
 }
 
 export async function deleteAllBlogs() {
