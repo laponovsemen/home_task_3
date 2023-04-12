@@ -16,6 +16,7 @@ export async function getAllBlogs(req: Request, res: Response) {
 
 export async function deleteBlogById(req: Request, res: Response) {
     await client.db("forum").collection("blogs").deleteOne({id: req.params.id})
+    res.sendStatus(204)
 }
 
 
