@@ -2,7 +2,7 @@ import {BlogViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId} from "../common";
 import {client} from "../db";
-import {blogs} from "./blogsRepository";
+
 
 
 export let _blogs = []
@@ -64,7 +64,7 @@ export async function updateBlog(req: Request, res: Response) {
 
         res.status(201).send(updatedBlog)
     } else {
-        await  res.sendStatus(404)
+        res.sendStatus(404)
     }
 
 }

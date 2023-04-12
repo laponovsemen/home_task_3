@@ -1,6 +1,6 @@
-import {BlogViewModelType, PostViewModelType} from "../appTypes";
+import { PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
-import {createNewBlogId} from "../common";
+
 import {client} from "../db";
 
 
@@ -45,8 +45,27 @@ export async function createPost(req: Request, res: Response) {
 
 }
 
-export function updatePost(req: Request, res: Response) {
+export async function updatePost(req: Request, res: Response) {
+    const postToUpdate = await client.db("forum").collection("blogs").findOne({id: req.params.id})
+    if (postToUpdate) {
+        const updatedPost = {
+            id: req.params.id,
+            name: req.body.name,
+            description: req.body.description,
+            websiteUrl: req.body.websiteUrl,
+            createdAt: postToUpdate.createdAt,
+            isMembership: postToUpdate.isMembership,
+        }
+        res.status(201).send(client
+            .db("forum")
+            .collection("blogs")
+            .updateOne({"id": req.params.id},
+                {$set: {updatedPost}}))
 
+        res.status(201).send(updatedPost)
+    } else {
+        res.sendStatus(404)
+    }
 }
 
 
