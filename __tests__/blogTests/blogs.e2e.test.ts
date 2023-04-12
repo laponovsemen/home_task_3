@@ -42,7 +42,7 @@ describe("TESTING OF CREATING BLOGS", () => {
             id : expect.any(String),
             name : "string", //maxLength: 15
             description : "string",// maxLength: 500
-            websiteUrl : "https://samurai.it-incubator.io/pc",
+            websiteUrl : "https://samurai.it-incubator.io/pc",// maxLength: 100 pattern
             createdAt : expect.any(String),
             isMembership : false
         })

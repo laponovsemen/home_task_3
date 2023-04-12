@@ -15,7 +15,7 @@ export async function getBlogById(req: Request, res: Response) {
     }
 }
 export async function getAllBlogs(req: Request, res: Response) {
-    const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({})
+    const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({}).toArray()
     res.status(200).send(result)
 }
 
@@ -36,7 +36,7 @@ export async function createBlog(req: Request, res: Response) {
         createdAt: new Date().toISOString(),
         isMembership: false,
     }
-    await client.db("forum").collection<BlogViewModelType>("blogs").insertOne(newBlog)
+    const result = await client.db("forum").collection<BlogViewModelType>("blogs").insertOne(newBlog)
 
     res.status(201).send(newBlog)
 }
