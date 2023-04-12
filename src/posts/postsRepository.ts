@@ -1,5 +1,6 @@
 import {BlogViewModelType, PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
+/*
 
 
 export let posts : PostViewModelType[] = []
@@ -35,3 +36,4 @@ export function  createPost() {
 export function  updatePost() {
 
 }
+*/
