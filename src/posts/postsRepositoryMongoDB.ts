@@ -3,30 +3,24 @@ import {NextFunction, Request, Response} from "express";
 
 import {client} from "../db";
 
-
-
-
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
     if(blogId) {
-        const result = await client.db("forum").collection("blogs").findOne({id: blogId})
+        const result = await client.db("forum").collection("posts").findOne({id: blogId})
         res.status(200).send(result)
     } else {
         res.sendStatus(404)
     }
-
 }
 export async function getAllPosts(req: Request, res: Response) {
-     const result = await client.db("forum").collection("blogs").find({})
+     const result = await client.db("forum").collection<PostViewModelType>("posts").find({}).toArray()
      res.status(200).send(result)
 }
 
 export async function deletePostById(req: Request, res: Response) {
-     const result = await client.db("forum").collection("blogs").deleteOne({id : req.params.id})
+     const result = await client.db("forum").collection("posts").deleteOne({id : req.params.id})
      res.status(200).send(result)
 }
-
-
 
 export async function createPost(req: Request, res: Response) {
     const blog = await client.db("forum").collection("blogs").findOne({id : req.body.blogId})
@@ -45,11 +39,10 @@ export async function createPost(req: Request, res: Response) {
     } else {
         res.sendStatus(400)
     }
-
 }
 
 export async function updatePost(req: Request, res: Response) {
-    const postToUpdate = await client.db("forum").collection("blogs").findOne({id: req.params.id})
+    const postToUpdate = await client.db("forum").collection("posts").findOne({id: req.params.id})
     if (postToUpdate) {
         const updatedPost = {
             id: req.params.id,
@@ -59,17 +52,13 @@ export async function updatePost(req: Request, res: Response) {
             createdAt: postToUpdate.createdAt,
             isMembership: postToUpdate.isMembership,
         }
-        await client.db("forum").collection("blogs").updateOne({"id": req.params.id},{$set: {updatedPost}})
+        await client.db("forum").collection("posts").updateOne({"id": req.params.id},{$set: {updatedPost}})
         res.status(204)
-
-
     } else {
         res.sendStatus(404)
     }
 }
 
-
 export async function deleteAllPosts() {
-    await client.db("forum").collection("posts").deleteMany({})
-
+    await client.db("forum").collection<PostViewModelType>("posts").deleteMany({})
 }

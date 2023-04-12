@@ -8,17 +8,18 @@ import {client} from "../db";
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
     if(req.params.id) {
-        await res.status(200).send(client.db("forum").collection("blogs").find({id: req.params.id}))
+        const result = await client.db("forum").collection("blogs").find({id: req.params.id})
+        res.status(200).send(result)
     } else {
         res.sendStatus(404)
     }
 }
 export async function getAllBlogs(req: Request, res: Response) {
-    await res.status(200).send(client.db("forum").collection("blogs").find({}))
+    const result = await client.db("forum").collection("blogs").find({})
+    res.status(200).send(result)
 }
 
 export async function deleteBlogById(req: Request, res: Response) {
-
     await client.db("forum").collection("blogs").deleteOne({id: req.params.id})
     res.sendStatus(204)
 }
@@ -35,14 +36,13 @@ export async function createBlog(req: Request, res: Response) {
         createdAt: new Date().toISOString(),
         isMembership: false,
     }
-    await res.status(201).send(client.db("forum").collection("blogs").insertOne(newBlog))
+    await client.db("forum").collection<BlogViewModelType>("blogs").insertOne(newBlog)
     res.status(201).send(newBlog)
 }
 
-export async function deleteAllBlogs() {
-    await client.db("forum").collection("blogs").deleteMany({})
-
-
+export async function deleteAllBlogs() : Promise<boolean> {
+    await client.db("forum").collection<BlogViewModelType>("blogs").deleteMany({})
+    return true
 }
 
 export async function updateBlog(req: Request, res: Response) {
