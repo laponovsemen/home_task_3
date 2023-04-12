@@ -8,7 +8,7 @@ import {client} from "../db";
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
     if(req.params.id) {
-        const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id})
+        const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id}, {projection: {_id: false}})
         if(result){
             res.status(200).send(result)
         }else{
