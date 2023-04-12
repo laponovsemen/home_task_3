@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {createPost, deletePostById, getAllPosts, getPostById, updatePost} from "./postsRepository";
+import {createPost, deletePostById, getAllPosts, getPostById, updatePost} from "./postsRepositoryMongoDB";
 
 export const postsRouter = Router({})
 
