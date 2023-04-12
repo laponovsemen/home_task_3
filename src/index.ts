@@ -3,8 +3,8 @@ import {runDb} from "./db";
 
 const port = process.env.PORT || 8080
 
-export const startApp =  () => {
-    runDb()
+export const startApp =  async () => {
+    await runDb()
     app.listen(port, () => {
         console.log(`app started on ${port} port`)
     })

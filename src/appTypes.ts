@@ -15,7 +15,9 @@ export type BlogViewModelType = {
     id : string,
     name:	string,
     description: string,
-    websiteUrl: string
+    websiteUrl: string,
+    isMembership: boolean,
+    createdAt : string
 }
 export type PostInputModelType = {
     title : 	string, //    maxLength: 30
@@ -29,5 +31,7 @@ export type PostViewModelType = {
     shortDescription:	string,
     content:	string,
     blogId:	string,
-    blogName:	string
+    blogName:	string,
+    isMembership: boolean,
+    createdAt : string
 }

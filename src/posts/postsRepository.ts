@@ -4,9 +4,9 @@ import {NextFunction, Request, Response} from "express";
 
 export let posts : PostViewModelType[] = []
 export function getPostById(req: Request, res: Response) {
-    const foundBlog = posts.find(blog => blog.id === req.params.id)
-    if(foundBlog){
-        res.status(200).send(foundBlog)
+    const foundPost = posts.find(post => post.id === req.params.id)
+    if(foundPost){
+        res.status(200).send(foundPost)
     } else {
         res.sendStatus(404)
     }
@@ -25,7 +25,9 @@ export function deletePostById(req: Request, res: Response) {
     }
 }
 
-
+export function deleteAllPosts() {
+    posts = posts.splice(0, posts.length - 1)
+}
 
 export function  createPost() {
 

@@ -1,8 +1,8 @@
 import {Router} from 'express'
-import {deleteAllBlogs} from "../blogs/blogsRepository";
 import {deleteAllInformation} from "./testingRepository";
+import {basicAuthGuardMiddleware} from "../common";
 
 export const testingRouter = Router({})
 
 
-testingRouter.delete("", deleteAllInformation)
+testingRouter.delete("",basicAuthGuardMiddleware,  deleteAllInformation)
