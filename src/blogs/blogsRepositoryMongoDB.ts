@@ -38,8 +38,8 @@ export function createBlog(req: Request, res: Response) {
     res.status(201).send(newBlog)
 }
 
-export function deleteAllBlogs() {
-
+export async function deleteAllBlogs() {
+    await client.db("forum").collection("blogs").deleteMany({})
 
 }
 

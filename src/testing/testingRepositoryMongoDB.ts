@@ -1,6 +1,6 @@
-import {deleteAllBlogs} from "../blogs/blogsRepository";
+import {deleteAllBlogs} from "../blogs/blogsRepositoryMongoDB";
 import {Response,Request} from "express";
-import {deleteAllPosts, posts} from "../posts/postsRepository";
+import {deleteAllPosts} from "../posts/postsRepositoryMongoDB";
 
 
 
