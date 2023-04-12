@@ -16,11 +16,13 @@ export async function getPostById(req: Request, res: Response) {
 
 }
 export async function getAllPosts(req: Request, res: Response) {
-    await res.status(200).send(client.db("forum").collection("blogs").find({}))
+     const result = await client.db("forum").collection("blogs").find({})
+     res.status(200).send(result)
 }
 
 export async function deletePostById(req: Request, res: Response) {
-    await res.status(200).send(client.db("forum").collection("blogs").deleteOne({id : req.params.id}))
+     const result = await client.db("forum").collection("blogs").deleteOne({id : req.params.id})
+     res.status(200).send(result)
 }
 
 
