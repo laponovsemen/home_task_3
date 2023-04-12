@@ -26,8 +26,18 @@ export async function deletePostById(req: Request, res: Response) {
 
 
 export async function createPost(req: Request, res: Response) {
-    await res.status(201).send(client.db("forum").collection("blogs").insertOne({id:
-    }))
+    const newPost = {
+        id:	+(new Date()).toISOString(),
+        title: req.body.title,
+        shortDescription: req.body.shortDescription,
+        content: req.body.content,
+        blogId:	req.body.blogId,
+        blogName: await client.db("forum").collection("blogs").findOne({id : req.body.blogId}),
+        isMembership: false,
+        createdAt : new Date().toISOString()
+    }
+    await client.db("forum").collection("posts").insertOne(newPost)
+    res.status(201).send(newPost)
 }
 
 export function updatePost(req: Request, res: Response) {

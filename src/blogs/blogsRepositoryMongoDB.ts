@@ -20,8 +20,18 @@ export async function deleteBlogById(req: Request, res: Response) {
 
 
 
-export function createBlog(req: Request, res: Response) {
+export async function createBlog(req: Request, res: Response) {
 
+    const newBlog = {
+        id: +(new Date()).toISOString(),
+        name: req.body.name,
+        description: req.body.description,
+        websiteUrl: req.body.websiteUrl,
+        createdAt: new Date().toISOString(),
+        isMembership: false,
+    }
+    await res.status(201).send(client.db("forum").collection("blogs").insertOne(newBlog))
+    res.status(201).send(newBlog)
 }
 
 export async function deleteAllBlogs() {
@@ -29,27 +39,27 @@ export async function deleteAllBlogs() {
 
 }
 
-export function updateBlog(req: Request, res: Response) {
-    const foundBlog = blogs.find(blog => blog.id === req.params.id)
-
-    if(foundBlog){
-        const index = blogs.indexOf(foundBlog)
+export async function updateBlog(req: Request, res: Response) {
+    const blogToUpdate = await client.db("forum").collection("blogs").findOne({id : req.params.id})
+    if(blogToUpdate) {
         const updatedBlog = {
-            "id": foundBlog.id,
-            "name": req.body.name,
-            "description": req.body.description,
-            "websiteUrl": req.body.websiteUrl,
-            "createdAt": foundBlog.createdAt,
-            "isMembership": foundBlog.isMembership // always true
+            id: req.params.id,
+            name: req.body.name,
+            description: req.body.description,
+            websiteUrl: req.body.websiteUrl,
+            createdAt: blogToUpdate.createdAt,
+            isMembership: blogToUpdate.isMembership,
         }
-        blogs[index] = updatedBlog
-        res.sendStatus(204)
+        await res.status(201).send(client
+            .db("forum")
+            .collection("blogs")
+            .updateOne( { "id" : req.params.id },
+            { $set: {updatedBlog}}))
 
+        res.status(201).send(updatedBlog)
     } else {
-        res.status(404)
+        await  res.sendStatus(404)
     }
-
-
 
 }
 
