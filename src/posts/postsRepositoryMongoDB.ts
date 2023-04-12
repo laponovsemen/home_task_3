@@ -9,9 +9,10 @@ import {client} from "../db";
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
     if(blogId) {
-        await res.status(200).send(client.db("forum").collection("blogs").findOne({id: blogId}))
+        const result = await client.db("forum").collection("blogs").findOne({id: blogId})
+        res.status(200).send(result)
     } else {
-        await res.sendStatus(404)
+        res.sendStatus(404)
     }
 
 }
@@ -58,13 +59,10 @@ export async function updatePost(req: Request, res: Response) {
             createdAt: postToUpdate.createdAt,
             isMembership: postToUpdate.isMembership,
         }
-        res.status(201).send(client
-            .db("forum")
-            .collection("blogs")
-            .updateOne({"id": req.params.id},
-                {$set: {updatedPost}}))
+        await client.db("forum").collection("blogs").updateOne({"id": req.params.id},{$set: {updatedPost}})
+        res.status(204)
 
-        res.status(201).send(updatedPost)
+
     } else {
         res.sendStatus(404)
     }
