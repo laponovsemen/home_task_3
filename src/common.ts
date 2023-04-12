@@ -20,9 +20,7 @@ export const basicAuthGuardMiddleware  = (req : Request, res: Response, next : N
         .withMessage("wrong login and password")
     const errors = validationResult(req)
     console.log(errors, 'errors')
-    console.log('i`m check the header')
     if(!errors.isEmpty()){
-        console.log('i dgaf')
         res.status(401).send({errorsMessages : errors.array()})
     } else {
         next()
@@ -31,7 +29,7 @@ export const basicAuthGuardMiddleware  = (req : Request, res: Response, next : N
 
 export const ValidationErrors = (req: Request, res : Response, next : NextFunction) => {
     const errors = validationResult(req)
-    console.log(errors, 'errors in middleware')
+    //console.log(errors, 'errors in middleware')
     if(!errors.isEmpty()){
         res.status(400).send({errors : errors.array()})
     } else {

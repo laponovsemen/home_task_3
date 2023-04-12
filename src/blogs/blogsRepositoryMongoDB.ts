@@ -8,14 +8,14 @@ import {client} from "../db";
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
     if(req.params.id) {
-        const result = await client.db("forum").collection("blogs").find({id: req.params.id})
+        const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id})
         res.status(200).send(result)
     } else {
         res.sendStatus(404)
     }
 }
 export async function getAllBlogs(req: Request, res: Response) {
-    const result = await client.db("forum").collection("blogs").find({})
+    const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({})
     res.status(200).send(result)
 }
 
@@ -37,6 +37,7 @@ export async function createBlog(req: Request, res: Response) {
         isMembership: false,
     }
     await client.db("forum").collection<BlogViewModelType>("blogs").insertOne(newBlog)
+
     res.status(201).send(newBlog)
 }
 
@@ -46,7 +47,7 @@ export async function deleteAllBlogs() : Promise<boolean> {
 }
 
 export async function updateBlog(req: Request, res: Response) {
-    const blogToUpdate = await client.db("forum").collection("blogs").findOne({id : req.params.id})
+    const blogToUpdate = await client.db("forum").collection<BlogViewModelType>("blogs").findOne({id : req.params.id})
     if(blogToUpdate) {
         const updatedBlog = {
             id: req.params.id,

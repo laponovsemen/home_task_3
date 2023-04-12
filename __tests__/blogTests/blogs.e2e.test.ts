@@ -27,7 +27,7 @@ describe("TESTING OF GETTING ALL BLOGS", () => {
 })
 
 describe("TESTING OF CREATING BLOGS", () => {
-    it("should return STATRUS CODE 201 and created  blogs //auth is correct", async () => {
+    it("should return STATRUS CODE 201 and created  blogs //Authorization field is correct", async () => {
         request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
             .post("/blogs")
@@ -48,11 +48,11 @@ describe("TESTING OF CREATING BLOGS", () => {
         })
     })
 
-    it("should return STATRUS CODE 201 and created  blogs //auth is incorrect", async () => {
+    it("should return STATRUS CODE 401 and created  blogs //Authorization field is incorrect", async () => {
         request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
             .post("/blogs")
-            .set(auth, ";dllfksdl")
+            .set(auth, ";errrrwwrwerwrwrwerrwerewrewredllfkklbklhsdl")
             .send({
                 name : "string", //maxLength: 15
                 description : "string",// maxLength: 500
