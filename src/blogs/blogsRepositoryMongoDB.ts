@@ -28,7 +28,7 @@ export async function deleteBlogById(req: Request, res: Response) {
 export async function createBlog(req: Request, res: Response) {
 
     const newBlog = {
-        id: +(new Date()).toISOString(),
+        id: (+(new Date())).toString(),
         name: req.body.name,
         description: req.body.description,
         websiteUrl: req.body.websiteUrl,
