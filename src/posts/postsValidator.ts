@@ -27,17 +27,16 @@ export const PostContentValidation = body("content")
     .withMessage("the field content is not a sting")
     .bail()
     .trim()
-    .isURL()
-    .withMessage("the content field is not URL")
-    .bail()
-    .isLength({min : 1, max : 1000})
+    .isLength({max : 1000})
     .withMessage("the length of content field is more than 1000 chars")
+
+    .withMessage("the length of content field is empty string")
 
 export const PostBlogIdValidation = body("blogId")
     .isString()
     .withMessage("the field blogId is not a sting")
     .trim()
-    .isEmpty()
+    .isLength({min : 1})
     .withMessage("the blogId field is empty")
 
 
