@@ -22,9 +22,6 @@ export type BlogViewModelType = {
     createdAt : string
 }
 
-export type BlogMongoModelType ={
-
-}
 export type BlogInsertModelType = {
     name:	string,
     description: string,
@@ -40,7 +37,16 @@ export type PostInputModelType = {
     blogId: string
 }
 export type PostViewModelType = {
-    id:	string,
+    _id:	ObjectId,
+    title:	string,
+    shortDescription:	string,
+    content:	string,
+    blogId:	string,
+    blogName:	string,
+    createdAt : string
+}
+
+export type PostInsertModelType = {
     title:	string,
     shortDescription:	string,
     content:	string,

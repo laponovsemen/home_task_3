@@ -1,4 +1,4 @@
-import {BlogInsertModelType, BlogMongoModelType, BlogViewModelType, PostViewModelType} from "../appTypes";
+import {BlogInsertModelType, PostInsertModelType, BlogViewModelType, PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
@@ -77,7 +77,7 @@ export async function deleteAllBlogs() {
 }
 
 export async function updateBlog(req: Request, res: Response) {
-    const blogToUpdate = await client.db("forum").collection<BlogMongoModelType>("blogs").findOne({_id : new ObjectId(req.params.id)})
+    const blogToUpdate = await client.db("forum").collection<BlogViewModelType>("blogs").findOne({_id : new ObjectId(req.params.id)})
     if(blogToUpdate) {
         const updatedBlog = {
             id: req.params.id,

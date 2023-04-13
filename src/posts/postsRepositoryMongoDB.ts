@@ -1,7 +1,9 @@
-import { PostViewModelType} from "../appTypes";
+import {PostInsertModelType, PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 
 import {client} from "../db";
+import {mongoBlogSlicing, mongoPostSlicing} from "../common";
+import {blogsCollection} from "../blogs/blogsRepositoryMongoDB";
 
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
@@ -14,7 +16,8 @@ export async function getPostById(req: Request, res: Response) {
 }
 export async function getAllPosts(req: Request, res: Response) {
      const result = await client.db("forum").collection<PostViewModelType>("posts").find({}).toArray()
-     res.status(200).send(result)
+     res.status(200).send(result.map(post => mongoPostSlicing(post)))
+
 }
 
 export async function deletePostById(req: Request, res: Response) {
@@ -25,8 +28,7 @@ export async function deletePostById(req: Request, res: Response) {
 export async function createPost(req: Request, res: Response) {
     const blog = await client.db("forum").collection("blogs").findOne({id : req.body.blogId})
     if(blog) {
-        const newPost: PostViewModelType = {
-            id: (+(new Date())).toString(),
+        const newPost: PostInsertModelType = {
             title: req.body.title,
             shortDescription: req.body.shortDescription,
             content: req.body.content,

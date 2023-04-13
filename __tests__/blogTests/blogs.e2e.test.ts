@@ -152,28 +152,25 @@ describe("TESTING OF GETTING BLOG BY ID", () => {
 })
 
 describe("TESTING OF DELETING BLOG BY ID", () => {
-    it("should return status code 404 if blog not found is not found", async () => {
+    it("should return status code 404 if blog not found", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
-        await request(app).get("/blog/399482304723908").expect(404)
+        await request(app).delete("/blog/399482304723908").set(auth, basic).expect(404)
     })
-    it("should return status code 200 if blog found found", async () => {
+    it("should return status code 404 if blog not found", async () => {
+        await request(app).delete("/blog/399482304723908").set("dfsdf", "dsfdslfjklfdj").expect(401)
+    })
+    it("should return status code 204 if blog found and delete it", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
-        const createdBlog = await request(app).post("/blogs").set(auth, basic).send({
-            name : "string", //maxLength: 15
-            description : "string",// maxLength: 500
-            websiteUrl : "https://samurai.it-incubator.io/pc"
-        }).expect(201)
-
-        const ID = createdBlog.body.id
-
-        const result = await request(app).get(`/blogs/${ID}`).expect(200)
-        expect(result.body).toEqual({
-            id: ID,
-            name : "string", //maxLength: 15
-            description : "string",// maxLength: 500
-            websiteUrl : "https://samurai.it-incubator.io/pc",
-            createdAt: expect.any(String),
-            isMembership: false
-        })
+        const createdBlog = await request(app)
+            .post("/blogs")
+            .set(auth, basic)
+            .send({
+                name : "string", //maxLength: 15
+                description : "string",// maxLength: 500
+                websiteUrl : "https://samurai.it-incubator.io/pc" // maxLength: 100 pattern: ^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
+            })
+            .expect(201)
+        const blogId = createdBlog.body.id
+        await request(app).delete(`/blogs/${blogId}`).set(auth, basic).expect(204)
     })
 })
