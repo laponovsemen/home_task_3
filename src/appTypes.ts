@@ -12,13 +12,22 @@ export type BlogInputModelType = {
     websiteUrl : string // maxLength: 100 pattern: ^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
 }
 export type BlogViewModelType = {
-    id : string,
+    _id : string,
     name:	string,
     description: string,
     websiteUrl: string,
     isMembership: boolean,
     createdAt : string
 }
+
+export type BlogInsertModelType = {
+    name:	string,
+    description: string,
+    websiteUrl: string,
+    isMembership: boolean,
+    createdAt : string
+}
+
 export type PostInputModelType = {
     title : 	string, //    maxLength: 30
     shortDescription: string, //maxLength: 100

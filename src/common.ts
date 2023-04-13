@@ -1,5 +1,5 @@
 
-import {BlogViewModelType} from "./appTypes";
+import {BlogInsertModelType, BlogViewModelType} from "./appTypes";
 import {NextFunction, Request, Response} from "express";
 import {header, validationResult} from "express-validator";
 
@@ -39,7 +39,7 @@ export const ValidationErrors = (req: Request, res : Response, next : NextFuncti
 
 export const mongoBlogSlicing = ( Obj2: any) =>  {
     const Obj1 = {
-        id : Obj2.id,
+        id : Obj2._id,
         name:	Obj2.name,
         description: Obj2.description,
         websiteUrl: Obj2.websiteUrl,

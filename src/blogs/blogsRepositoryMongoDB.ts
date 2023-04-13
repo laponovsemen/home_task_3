@@ -1,15 +1,15 @@
-import {BlogViewModelType} from "../appTypes";
+import {BlogInsertModelType, BlogViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
 
 
 
-export let _blogs = []
+export let blogsCollection = client.db("forum").collection<BlogViewModelType>("blogs")
 export async function getBlogById(req: Request, res: Response) {
     if(req.params.id) {
-        const mongoBlog = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id})
-        const result: BlogViewModelType = mongoBlogSlicing(mongoBlog)
+        const mongoBlog = await blogsCollection.find({id: req.params.id})
+        const result = mongoBlogSlicing(mongoBlog)
         if(result){
             res.status(200).send(result)
         }else{
@@ -21,7 +21,7 @@ export async function getBlogById(req: Request, res: Response) {
     }
 }
 export async function getAllBlogs(req: Request, res: Response) {
-    const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({}).toArray()
+    const result = await blogsCollection.find({}).toArray()  //{ projection: { name : 0}}
     res.status(200).send(result.map(blog => mongoBlogSlicing(blog)))
 }
 
@@ -35,16 +35,23 @@ export async function deleteBlogById(req: Request, res: Response) {
 export async function createBlog(req: Request, res: Response) {
 
     const newBlog = {
-        id: (+(new Date())).toString(),
         name: req.body.name,
         description: req.body.description,
         websiteUrl: req.body.websiteUrl,
         createdAt: new Date().toISOString(),
         isMembership: false,
     }
-    await client.db("forum").collection<BlogViewModelType>("blogs").insertOne({...newBlog})  // Need to check / bad decision
 
-    res.status(201).send(newBlog)
+    const result = await client.db("forum").collection<BlogInsertModelType>("blogs").insertOne(newBlog)  // Need to check / bad decision
+
+    res.status(201).send({
+        id: result.insertedId,
+        name: newBlog.name,
+        description: newBlog.description,
+        websiteUrl: newBlog.websiteUrl,
+        createdAt: newBlog.createdAt,
+        isMembership: newBlog.isMembership,
+    })
 }
 
 export async function deleteAllBlogs() : Promise<boolean> {
