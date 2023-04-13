@@ -35,7 +35,7 @@ export async function deleteBlogById(req: Request, res: Response) {
     } else {
         res.sendStatus(404)
     }
-
+    //  SELECT id, name, description, webUrl FROM blogs
 
 }
 
