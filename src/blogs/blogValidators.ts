@@ -37,4 +37,3 @@ export const BlogWebsiteUrlValidation = body("websiteUrl")
     .withMessage("the length of websiteUrl field is more than 100 chars ")
 
 
-export const CreateBlogValidation = [BlogNameValidation, BlogDescriptionValidation, BlogWebsiteUrlValidation, ValidationErrors]

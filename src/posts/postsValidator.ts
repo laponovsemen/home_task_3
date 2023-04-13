@@ -37,8 +37,8 @@ export const PostBlogIdValidation = body("blogId")
     .isString()
     .withMessage("the field blogId is not a sting")
     .trim()
-    .withMessage("the content field is not blogId")
+    .isEmpty()
+    .withMessage("the blogId field is empty")
 
 
-export const UpdatePostValidation = []
-export const CreatePostValidation = [PostTitleValidation, PostShortDescriptionValidation, PostContentValidation, PostBlogIdValidation, ValidationErrors]
+

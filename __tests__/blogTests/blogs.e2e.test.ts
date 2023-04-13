@@ -11,14 +11,14 @@ const basic = 'Basic YWRtaW46cXdlcnR5'
 //BLOGS ROUTE
 describe("TESTING OF GETTING ALL BLOGS", () => {
     it("should return all blogs //auth is correct", async () => {
-        request(app).delete("/testing/all-data").set(auth, basic)
+        await request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
             .get("/blogs")
             .expect(200)
         expect(result.body).toEqual([])
     })
     it("should return all blogs //auth is incorrect", async () => {
-        request(app).delete("/testing/all-data")
+        await request(app).delete("/testing/all-data")
         const result = await request(app)
             .get("/blogs")
             .expect(200)
@@ -125,6 +125,33 @@ describe("TESTING OF CREATING BLOGS", () => {
 })
 
 describe("TESTING OF GETTING BLOG BY ID", () => {
+    it("should return status code 404 if blog not found is not found", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        await request(app).get("/blog/399482304723908").expect(404)
+    })
+    it("should return status code 200 if blog found found", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        const createdBlog = await request(app).post("/blogs").set(auth, basic).send({
+            name : "string", //maxLength: 15
+            description : "string",// maxLength: 500
+            websiteUrl : "https://samurai.it-incubator.io/pc"
+        }).expect(201)
+
+        const ID = createdBlog.body.id
+
+        const result = await request(app).get(`/blogs/${ID}`).expect(200)
+        expect(result.body).toEqual({
+            id: ID,
+            name : "string", //maxLength: 15
+            description : "string",// maxLength: 500
+            websiteUrl : "https://samurai.it-incubator.io/pc",
+            createdAt: expect.any(String),
+            isMembership: false
+        })
+    })
+})
+
+describe("TESTING OF DELETING BLOG BY ID", () => {
     it("should return status code 404 if blog not found is not found", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
         await request(app).get("/blog/399482304723908").expect(404)

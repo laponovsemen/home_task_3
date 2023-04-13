@@ -4,14 +4,15 @@ import {
     BlogDescriptionValidation,
     BlogNameValidation,
     BlogWebsiteUrlValidation,
-    CreateBlogValidation
 } from "./blogValidators";
 import {basicAuthGuardMiddleware, ValidationErrors} from "../common";
 
 export const blogsRouter = Router({})
 
+const blogDataValidation = [BlogNameValidation, BlogDescriptionValidation, BlogWebsiteUrlValidation, ValidationErrors]
+
 blogsRouter.get("", getAllBlogs)
-blogsRouter.post("", basicAuthGuardMiddleware,BlogNameValidation, BlogDescriptionValidation, BlogWebsiteUrlValidation, ValidationErrors, createBlog)
+blogsRouter.post("", basicAuthGuardMiddleware, blogDataValidation, createBlog)
 blogsRouter.get("/:id", getBlogById)
 blogsRouter.put("/:id",basicAuthGuardMiddleware, updateBlog)
-blogsRouter.delete("/:id",basicAuthGuardMiddleware,  deleteBlogById)
+blogsRouter.delete("/:id",basicAuthGuardMiddleware, blogDataValidation,   deleteBlogById)
