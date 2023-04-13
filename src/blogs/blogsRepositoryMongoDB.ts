@@ -1,4 +1,4 @@
-import {BlogInsertModelType, BlogMongoModelType, BlogViewModelType} from "../appTypes";
+import {BlogInsertModelType, BlogMongoModelType, BlogViewModelType, PostViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
@@ -65,9 +65,9 @@ export async function createBlog(req: Request, res: Response) {
     })
 }
 
-export async function deleteAllBlogs() : Promise<boolean> {
+export async function deleteAllBlogs() {
     await client.db("forum").collection<BlogViewModelType>("blogs").deleteMany({})
-    return true
+
 }
 
 export async function updateBlog(req: Request, res: Response) {
