@@ -13,14 +13,14 @@ describe("TESTING OF GETTING ALL BLOGS", () => {
     it("should return all blogs //auth is correct", async () => {
         request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
-            .get("/posts")
+            .get("/blogs")
             .expect(200)
         expect(result.body).toEqual([])
     })
     it("should return all blogs //auth is incorrect", async () => {
         request(app).delete("/testing/all-data")
         const result = await request(app)
-            .get("/posts")
+            .get("/blogs")
             .expect(200)
         expect(result.body).toEqual([])
     })
@@ -139,9 +139,8 @@ describe("TESTING OF GETTING BLOG BY ID", () => {
 
         const ID = createdBlog.body.id
 
-        const result = await request(app).get(`/blogs/${ID}`)//.expect(200)
-        console.log(result)
-        expect(result).toEqual({
+        const result = await request(app).get(`/blogs/${ID}`).expect(200)
+        expect(result.body).toEqual({
             id: ID,
             name : "string", //maxLength: 15
             description : "string",// maxLength: 500

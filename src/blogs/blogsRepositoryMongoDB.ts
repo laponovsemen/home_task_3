@@ -10,11 +10,13 @@ export let blogsCollection = client.db("forum").collection<BlogViewModelType>("b
 export async function getBlogById(req: Request, res: Response) {
      if(req.params.id) {
         console.log(req.params.id)
-        const mongoBlog = await blogsCollection.findOne({id: new ObjectId(req.params.id)})
+        const mongoBlog = await blogsCollection
+            .findOne({_id: new ObjectId(req.params.id)},
+                {projection : {id : 1, name: 1,description: 1, websiteUrl: 1, isMembership: 1, createdAt: 1}})
          console.log('mongoBlog: '+ mongoBlog)
          if(mongoBlog){
-             const result = mongoBlogSlicing(mongoBlog)
-             res.status(200).send(result)
+
+             res.status(200).send(mongoBlogSlicing(mongoBlog))
          }else{
             res.sendStatus(404)
         }

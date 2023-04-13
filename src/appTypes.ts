@@ -1,3 +1,5 @@
+import {ObjectId} from "mongodb";
+
 export type APIErrorResultType = {
     errorsMessages : FieldErrorType[]
 
@@ -12,7 +14,7 @@ export type BlogInputModelType = {
     websiteUrl : string // maxLength: 100 pattern: ^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
 }
 export type BlogViewModelType = {
-    _id : string,
+    _id : ObjectId,
     name:	string,
     description: string,
     websiteUrl: string,
@@ -20,6 +22,9 @@ export type BlogViewModelType = {
     createdAt : string
 }
 
+export type BlogMongoModelType ={
+
+}
 export type BlogInsertModelType = {
     name:	string,
     description: string,
