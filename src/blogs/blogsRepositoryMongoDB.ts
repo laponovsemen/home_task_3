@@ -22,7 +22,7 @@ export async function getBlogById(req: Request, res: Response) {
 }
 export async function getAllBlogs(req: Request, res: Response) {
     const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({}).toArray()
-    res.status(200).send(result)
+    res.status(200).send(result.map(blog => mongoBlogSlicing(blog)))
 }
 
 export async function deleteBlogById(req: Request, res: Response) {
