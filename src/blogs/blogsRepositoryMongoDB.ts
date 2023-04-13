@@ -1,4 +1,4 @@
-import {BlogInsertModelType, BlogViewModelType} from "../appTypes";
+import {BlogInsertModelType, BlogMongoModelType, BlogViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
@@ -13,7 +13,6 @@ export async function getBlogById(req: Request, res: Response) {
         const mongoBlog = await blogsCollection
             .findOne({_id: new ObjectId(req.params.id)},
                 {projection : {id : 1, name: 1,description: 1, websiteUrl: 1, isMembership: 1, createdAt: 1}})
-         console.log('mongoBlog: '+ mongoBlog)
          if(mongoBlog){
 
              res.status(200).send(mongoBlogSlicing(mongoBlog))
@@ -72,15 +71,15 @@ export async function deleteAllBlogs() : Promise<boolean> {
 }
 
 export async function updateBlog(req: Request, res: Response) {
-    const blogToUpdate = await client.db("forum").collection<BlogViewModelType>("blogs").findOne({id : req.params.id})
+    const blogToUpdate = await client.db("forum").collection<BlogMongoModelType>("blogs").findOne({_id : new ObjectId(req.params.id)})
     if(blogToUpdate) {
         const updatedBlog = {
             id: req.params.id,
             name: req.body.name,
             description: req.body.description,
             websiteUrl: req.body.websiteUrl,
-            createdAt: blogToUpdate.createdAt,
-            isMembership: blogToUpdate.isMembership,
+            /*createdAt: blogToUpdate.createdAt,
+            isMembership: blogToUpdate.isMembership,*/
         }
         await res.status(201).send(client
             .db("forum")

@@ -9,6 +9,7 @@ export function createNewBlogId(array : BlogViewModelType[]) {
 
 
 export const basicAuthGuardMiddleware  = (req : Request, res: Response, next : NextFunction) => {
+    next()
     if(req.headers.authorization){
         const encoded : string = req.headers.authorization.split(" ")[1]
         const encodeway = req.headers.authorization.split(" ")[0]
