@@ -29,7 +29,7 @@ export const PostContentValidation = body("content")
     .trim()
     .isLength({max : 1000})
     .withMessage("the length of content field is more than 1000 chars")
-
+    .isLength({min : 1})
     .withMessage("the length of content field is empty string")
 
 export const PostBlogIdValidation = body("blogId")
