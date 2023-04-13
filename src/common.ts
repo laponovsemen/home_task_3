@@ -27,8 +27,8 @@ export const ValidationErrors = (req: Request, res : Response, next : NextFuncti
     const errors = validationResult(req)
     //console.log(errors, 'errors in middleware')
     if(!errors.isEmpty()){
-        res.status(400).send({errors : errors.array().map(error  => {
-            return {message: error.msg, field: error.location}
+        res.status(400).send({errorsMessages : errors.array().map(error  => {
+            return {message: error.msg, field: error.param}
             })})
     } else {
         next()

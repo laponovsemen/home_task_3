@@ -7,10 +7,12 @@ import {client} from "../db";
 
 export let blogsCollection = client.db("forum").collection<BlogViewModelType>("blogs")
 export async function getBlogById(req: Request, res: Response) {
-    if(req.params.id) {
-        const mongoBlog = await blogsCollection.find({id: req.params.id})
+    // if(req.params.id) {
+        const mongoBlog = await blogsCollection.findOne({_id: req.params.id})
         const result = mongoBlogSlicing(mongoBlog)
-        if(result){
+        console.log(result)
+        res.status(200).send(result)
+        /*if(result){
             res.status(200).send(result)
         }else{
             res.sendStatus(404)
@@ -18,7 +20,7 @@ export async function getBlogById(req: Request, res: Response) {
 
     } else {
         res.sendStatus(404)
-    }
+    }*/
 }
 export async function getAllBlogs(req: Request, res: Response) {
     const result = await blogsCollection.find({}).toArray()  //{ projection: { name : 0}}
