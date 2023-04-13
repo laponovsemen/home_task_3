@@ -52,7 +52,7 @@ describe("TESTING OF CREATING BLOGS", () => {
         request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
             .post("/blogs")
-            .set(auth, ";errrrwwrwerwrwrwerrwerewrewredllfkklbklhsdl")
+            .set(auth, "errrrwwrwerwrwrwerrwerewrewredllfkklbklhsdl")
             .send({
                 name : "string", //maxLength: 15
                 description : "string",// maxLength: 500

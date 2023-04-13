@@ -1,6 +1,6 @@
 import {BlogViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
-import {createNewBlogId} from "../common";
+import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
 
 
@@ -8,7 +8,8 @@ import {client} from "../db";
 export let _blogs = []
 export async function getBlogById(req: Request, res: Response) {
     if(req.params.id) {
-        const result = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id}, {projection: {_id: false}})
+        const mongoBlog = await client.db("forum").collection<BlogViewModelType>("blogs").find({id: req.params.id})
+        const result: BlogViewModelType = mongoBlogSlicing(mongoBlog)
         if(result){
             res.status(200).send(result)
         }else{
