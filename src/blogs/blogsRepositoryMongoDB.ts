@@ -41,7 +41,7 @@ export async function createBlog(req: Request, res: Response) {
         createdAt: new Date().toISOString(),
         isMembership: false,
     }
-    const result = await client.db("forum").collection<BlogViewModelType>("blogs").insertOne(newBlog)
+    await client.db("forum").collection<BlogViewModelType>("blogs").insertOne({...newBlog})  // Need to check / bad decision
 
     res.status(201).send(newBlog)
 }
