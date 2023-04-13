@@ -28,8 +28,15 @@ export async function getAllBlogs(req: Request, res: Response) {
 }
 
 export async function deleteBlogById(req: Request, res: Response) {
-    await client.db("forum").collection("blogs").deleteOne({id: req.params.id})
-    res.sendStatus(204)
+    if(req.params.id){
+        // @ts-ignore
+        await client.db("forum").collection("blogs").deleteOne({_id: req.params.id})
+        res.sendStatus(204)
+    } else {
+        res.sendStatus(404)
+    }
+
+
 }
 
 
