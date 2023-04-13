@@ -9,21 +9,17 @@ export function createNewBlogId(array : BlogViewModelType[]) {
 
 
 export const basicAuthGuardMiddleware  = (req : Request, res: Response, next : NextFunction) => {
-    header("Authorization")
-        .exists()
-        .withMessage("no authorization field")
-        .isString()
-        .withMessage("Authorization field is not a string")
-        .custom((value, { req }) => value.split(" ")[0] !== "Basic")
-        .withMessage("Autorization is not Basic")
-        .custom((value, { req }) =>  value.split(" ")[1] !== "YWRtaW46cXdlcnR5")
-        .withMessage("wrong login and password")
-    const errors = validationResult(req)
-    console.log(errors, 'errors')
-    if(!errors.isEmpty()){
-        res.status(401).send({errorsMessages : errors.array()})
-    } else {
-        next()
+    if(req.headers.authorization){
+        const encoded : string = req.headers.authorization.split(" ")[1]
+        const encodeway = req.headers.authorization.split(" ")[0]
+        const decoded : string = Buffer.from(encoded, 'base64').toString('utf8');
+        if(decoded === "admin:qwerty" && encodeway === "Basic"){
+            next()
+        }else{
+            res.sendStatus(401)
+        }
+    }else {
+        res.sendStatus(401)
     }
 }
 
@@ -31,7 +27,9 @@ export const ValidationErrors = (req: Request, res : Response, next : NextFuncti
     const errors = validationResult(req)
     //console.log(errors, 'errors in middleware')
     if(!errors.isEmpty()){
-        res.status(400).send({errors : errors.array()})
+        res.status(400).send({errors : errors.array().map(error  => {
+            return {message: error.msg, field: error.location}
+            })})
     } else {
         next()
     }

@@ -52,14 +52,26 @@ describe("TESTING OF CREATING BLOGS", () => {
         request(app).delete("/testing/all-data").set(auth, basic)
         const result = await request(app)
             .post("/blogs")
-            .set(auth, "errrrwwrwerwrwrwerrwerewrewredllfkklbklhsdl")
+            .set(auth, "")
             .send({
                 name : "string", //maxLength: 15
                 description : "string",// maxLength: 500
                 websiteUrl : "https://samurai.it-incubator.io/pc/video-content/watch/6255d0837db18afb3691560d" // maxLength: 100 pattern: ^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
             })
             .expect(401)
-
+    })
+    it("should return STATRUS CODE 401 and created  blogs //Authorization field is incorrect", async () => {
+        request(app).delete("/testing/all-data").set(auth, basic)
+        const result = await request(app)
+            .post("/blogs")
+            .set(auth, basic)
+            .send({
+                name : "", //maxLength: 15
+                description : "",// maxLength: 500
+                websiteUrl : "https://samurai.it-incubator.io/pc/video-content/watch/6255d0837db18afb3691560d" // maxLength: 100 pattern: ^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
+            })
+            .expect(400)
+        expect(result.body).toEqual([])
     })
 
 
