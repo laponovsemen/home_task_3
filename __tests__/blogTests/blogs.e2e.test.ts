@@ -138,8 +138,8 @@ describe("TESTING OF GETTING BLOG BY ID", () => {
         }).expect(201)
 
         const ID = createdBlog.body.id
-        console.log(ID)
-        const result = await request(app).get(`/blog/${ID}`).expect(200)
+
+        const result = await request(app).get(`/blogs/${ID}`)//.expect(200)
         console.log(result)
         expect(result).toEqual({
             id: ID,

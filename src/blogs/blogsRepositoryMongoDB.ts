@@ -2,25 +2,26 @@ import {BlogInsertModelType, BlogViewModelType} from "../appTypes";
 import {NextFunction, Request, Response} from "express";
 import {createNewBlogId, mongoBlogSlicing} from "../common";
 import {client} from "../db";
+import {ObjectId} from "mongodb";
 
 
 
 export let blogsCollection = client.db("forum").collection<BlogViewModelType>("blogs")
 export async function getBlogById(req: Request, res: Response) {
-    // if(req.params.id) {
-        const mongoBlog = await blogsCollection.findOne({_id: req.params.id})
-        const result = mongoBlogSlicing(mongoBlog)
-        console.log(result)
-        res.status(200).send(result)
-        /*if(result){
-            res.status(200).send(result)
-        }else{
+     if(req.params.id) {
+        console.log(req.params.id)
+        const mongoBlog = await blogsCollection.findOne({id: new ObjectId(req.params.id)})
+         console.log('mongoBlog: '+ mongoBlog)
+         if(mongoBlog){
+             const result = mongoBlogSlicing(mongoBlog)
+             res.status(200).send(result)
+         }else{
             res.sendStatus(404)
         }
 
     } else {
         res.sendStatus(404)
-    }*/
+    }
 }
 export async function getAllBlogs(req: Request, res: Response) {
     const result = await blogsCollection.find({}).toArray()  //{ projection: { name : 0}}

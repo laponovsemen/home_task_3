@@ -35,13 +35,13 @@ export const ValidationErrors = (req: Request, res : Response, next : NextFuncti
     }
 }
 
-export const mongoBlogSlicing = ( Obj2: any) =>  {
-    const Obj1 = {
+export const mongoBlogSlicing = ( Obj2: BlogViewModelType) =>  {
+    return {
         id : Obj2._id,
         name:	Obj2.name,
         description: Obj2.description,
         websiteUrl: Obj2.websiteUrl,
         isMembership: Obj2.isMembership,
-        createdAt : Obj2.createdAt}
-    return Obj1
+        createdAt : Obj2.createdAt
+    }
 }
