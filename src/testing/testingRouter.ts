@@ -5,4 +5,4 @@ import {basicAuthGuardMiddleware} from "../common";
 export const testingRouter = Router({})
 
 
-testingRouter.delete("",  deleteAllInformation)
+testingRouter.delete("", deleteAllInformation)
