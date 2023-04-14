@@ -26,7 +26,13 @@ describe("TESTING OF CREATING POST BY ID", () => {
                 "title":"post title",
                 "blogId":`${blogId}`})
             .expect(201)
-        expect(result.body).toEqual([])
+        expect(result.body).toEqual({"id": expect.any(String),
+            "blogId": blogId,
+            "blogName": "new blog",
+            "content": "new post content",
+            "createdAt": expect.any(String),
+            "shortDescription": "description",
+            "title": "post title"})
     })
     /*it("should create post", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)

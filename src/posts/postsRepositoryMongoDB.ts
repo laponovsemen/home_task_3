@@ -23,7 +23,7 @@ export async function getAllPosts(req: Request, res: Response) {
 
 export async function deletePostById(req: Request, res: Response) {
      const result = await client.db("forum").collection("posts").deleteOne({id : req.params.id})
-     res.status(200).send(result)
+     res.status(204).send(result)
 }
 
 export async function createPost(req: Request, res: Response) {
@@ -35,10 +35,21 @@ export async function createPost(req: Request, res: Response) {
             content: req.body.content,
             blogId: req.body.blogId,
             blogName: blog.name,
-            createdAt: new Date().toISOString()
+            createdAt: blog.createdAt,
+
         }
-        await client.db("forum").collection("posts").insertOne(newPost)
-        res.status(201).send(newPost)
+
+        const insertedPost = await client.db("forum").collection("posts").insertOne(newPost)
+
+        res.status(201).send({
+            id: insertedPost.insertedId,
+            title: newPost.title,
+            shortDescription: newPost.shortDescription,
+            content: newPost.content,
+            blogId: newPost.blogId,
+            blogName: newPost.blogName,
+            createdAt: newPost.createdAt,}
+        )
     } else {
         res.sendStatus(400)
     }

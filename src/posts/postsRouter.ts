@@ -10,7 +10,7 @@ import {
 export const postsRouter = Router({})
 const postDataValidation = [PostTitleValidation, PostShortDescriptionValidation, PostContentValidation, PostBlogIdValidation, ValidationErrors]
 postsRouter.get("", getAllPosts)
-postsRouter.post("",basicAuthGuardMiddleware,postDataValidation,  createPost)
+postsRouter.post("",basicAuthGuardMiddleware, postDataValidation,  createPost)
 postsRouter.get("/:id", getPostById)
 postsRouter.put("/:id",basicAuthGuardMiddleware,postDataValidation,  updatePost)
 postsRouter.delete("/:id",basicAuthGuardMiddleware, deletePostById)
