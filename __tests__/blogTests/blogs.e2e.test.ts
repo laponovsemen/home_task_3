@@ -154,10 +154,10 @@ describe("TESTING OF GETTING BLOG BY ID", () => {
 describe("TESTING OF DELETING BLOG BY ID", () => {
     it("should return status code 404 if blog not found", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
-        await request(app).delete("/blog/399482304723908").set(auth, basic).expect(404)
+        await request(app).delete("/blogs/643899abf224160164b2ad25").set(auth, basic).expect(404)
     })
     it("should return status code 404 if blog not found", async () => {
-        await request(app).delete("/blog/399482304723908").set("dfsdf", "dsfdslfjklfdj").expect(401)
+        await request(app).delete("/blogs/643899abf224160164b2ad25").set("dfsdf", "dsfdslfjklfdj").expect(401)
     })
     it("should return status code 204 if blog found and delete it", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
@@ -172,5 +172,87 @@ describe("TESTING OF DELETING BLOG BY ID", () => {
             .expect(201)
         const blogId = createdBlog.body.id
         await request(app).delete(`/blogs/${blogId}`).set(auth, basic).expect(204)
+    })
+})
+
+describe("TESTING OF UPDATING BLOG BY ID", () => {
+    it("should return status code 400 if blog wiyh no fields", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        await request(app).put("/blogs/399482304723908").set(auth, basic).expect(400)
+    })
+    it("should return status code 204 if blog found // all data is correct", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        const result = await request(app)
+            .post("/blogs")
+            .set(auth, basic)
+            .send({
+                name: "name",
+                description: "string",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",
+        }).expect(201)
+        const blogId = result.body.id
+        const updatedBlog = await request(app)
+            .put(`/blogs/${blogId}`)
+            .set(auth, basic)
+            .send({name: "noname",
+                description: "nostring",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+            .expect(204)
+        expect(updatedBlog).toEqual({
+            id : expect.any(String),
+            name: "noname",
+            description: "nostring",
+            websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",
+            createdAt : expect.any(String),
+            isMembership : false
+        })
+    })
+    it("should return status code 401 if unauthorized", async () => {
+        const updatedBlog = await request(app)
+            .put(`/blogs/1`)
+            .set("f", "sdf;kkndsfl")
+            .send({name: "noname",
+                description: "nostring",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+            .expect(401)
+    })
+    it("should return status code 401 if unauthorized", async () => {
+        const updatedBlog = await request(app)
+            .put(`/blogs/1`)
+            .set("f", "sdf;kkndsfl")
+            .send({name: "noname",
+                description: "nostring",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+            .expect(401)
+    })
+    it("should return status code 400 if data is incorrect // empty name field", async () => {
+        const result = await request(app)
+            .put(`/blogs/1`)
+            .set(auth, basic)
+            .send({name: "",
+                description: "nostring",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+            .expect(400)
+        expect(result.body).toEqual({errorsMessages : [{message : expect.any(String), field: expect.any(String)}]})
+    })
+    it("should return status code 400 if data is incorrect // empty description field", async () => {
+        const result = await request(app)
+            .put(`/blogs/1`)
+            .set(auth, basic)
+            .send({name: "nostring",
+                description: "",
+                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+            .expect(400)
+        expect(result.body).toEqual({errorsMessages : [{message : "description", field: expect.any(String)}]})
+    })
+    it("should return status code 400 if data is incorrect // empty description field", async () => {
+        const result = await request(app)
+            .put(`/blogs/1`)
+            .set(auth, basic)
+            .send({name: "nostring",
+                description: "https://samurai.it-incubator",
+                websiteUrl: "",})
+            .expect(400)
+        expect(result.body).toEqual({errorsMessages : [{message : "the websiteUrl field is not URL", field: "websiteUrl"}]})
     })
 })

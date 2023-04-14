@@ -11,6 +11,7 @@ const reg = /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$
         .trim()
         .isLength({max : 15})
     .withMessage("the length of name field is more than 15 chars")
+        .bail()
         .isLength({min : 1})
         .withMessage("the length of name field is less than 1 chars ")
 
