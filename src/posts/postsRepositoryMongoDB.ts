@@ -4,6 +4,7 @@ import {NextFunction, Request, Response} from "express";
 import {client} from "../db";
 import {mongoBlogSlicing, mongoPostSlicing} from "../common";
 import {blogsCollection} from "../blogs/blogsRepositoryMongoDB";
+import {ObjectId} from "mongodb";
 
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
@@ -26,7 +27,7 @@ export async function deletePostById(req: Request, res: Response) {
 }
 
 export async function createPost(req: Request, res: Response) {
-    const blog = await client.db("forum").collection("blogs").findOne({id : req.body.blogId})
+    const blog = await client.db("forum").collection("blogs").findOne({_id : new ObjectId(req.body.blogId)})
     if(blog) {
         const newPost: PostInsertModelType = {
             title: req.body.title,

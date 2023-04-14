@@ -198,14 +198,6 @@ describe("TESTING OF UPDATING BLOG BY ID", () => {
                 description: "nostring",
                 websiteUrl: "https://samurai.it-incubator.io",})
             .expect(204)
-        expect(updatedBlog).toEqual({
-            id : expect.any(String),
-            name: "noname",
-            description: "nostring",
-            websiteUrl: "https://samurai.it-incubator.io",
-            createdAt : expect.any(String),
-            isMembership : false
-        })
     })
     it("should return status code 401 if unauthorized", async () => {
         const updatedBlog = await request(app)
