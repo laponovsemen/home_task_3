@@ -2,7 +2,7 @@
 import request from "supertest"
 import {app} from "../../src/settings";
 import {before} from "node:test";
-import exp = require("constants");
+
 
 
 const auth = 'Authorization'
@@ -188,7 +188,7 @@ describe("TESTING OF UPDATING BLOG BY ID", () => {
             .send({
                 name: "name",
                 description: "string",
-                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",
+                websiteUrl: "https://samurai.it-incubator.io",
         }).expect(201)
         const blogId = result.body.id
         const updatedBlog = await request(app)
@@ -196,13 +196,13 @@ describe("TESTING OF UPDATING BLOG BY ID", () => {
             .set(auth, basic)
             .send({name: "noname",
                 description: "nostring",
-                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+                websiteUrl: "https://samurai.it-incubator.io",})
             .expect(204)
         expect(updatedBlog).toEqual({
             id : expect.any(String),
             name: "noname",
             description: "nostring",
-            websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",
+            websiteUrl: "https://samurai.it-incubator.io",
             createdAt : expect.any(String),
             isMembership : false
         })
@@ -231,19 +231,20 @@ describe("TESTING OF UPDATING BLOG BY ID", () => {
             .set(auth, basic)
             .send({name: "",
                 description: "nostring",
-                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+                websiteUrl: "https://samurai.it-incubator.io",})
             .expect(400)
         expect(result.body).toEqual({errorsMessages : [{message : expect.any(String), field: expect.any(String)}]})
     })
     it("should return status code 400 if data is incorrect // empty description field", async () => {
+
         const result = await request(app)
             .put(`/blogs/1`)
             .set(auth, basic)
             .send({name: "nostring",
                 description: "",
-                websiteUrl: "https://samurai.it-incubator.io/lessons/homeworks?id=624afdcde3f66c9c19412171",})
+                websiteUrl: "https://samurai.it-incubator.io",})
             .expect(400)
-        expect(result.body).toEqual({errorsMessages : [{message : "description", field: expect.any(String)}]})
+        expect(result.body).toEqual({errorsMessages : [{message : "the length of description field is less than 1", field: "description"}]})
     })
     it("should return status code 400 if data is incorrect // empty description field", async () => {
         const result = await request(app)

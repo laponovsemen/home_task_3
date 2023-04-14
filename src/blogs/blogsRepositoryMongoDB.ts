@@ -93,7 +93,7 @@ export async function updateBlog(req: Request, res: Response) {
             .updateOne( { "id" : req.params.id },
             { $set: {updatedBlog}}))
 
-        res.status(201).send(updatedBlog)
+        res.status(204).send(updatedBlog)
     } else {
         res.sendStatus(404)
     }
