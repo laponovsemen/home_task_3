@@ -31,7 +31,7 @@ export async function deletePostById(req: Request, res: Response) {
     if(deletedPost.deletedCount === 0){
         res.sendStatus(404)
     } else {
-        res.status(204)
+        res.sendStatus(204)
     }
 
 }
@@ -77,7 +77,7 @@ export async function updatePost(req: Request, res: Response) {
             isMembership: postToUpdate.isMembership,
         }
         await client.db("forum").collection("posts").updateOne({_id: new ObjectId(req.params.id)},{$set: {updatedPost}})
-        res.status(204)
+        res.sendStatus(204)
     } else {
         res.sendStatus(404)
     }
