@@ -31,23 +31,18 @@ export async function getAllBlogs(req: Request, res: Response) {
 
 export async function deleteBlogById(req: Request, res: Response) {
     if(req.params.id){
-
-
         const result = await client.db("forum").collection("blogs").deleteOne({_id: new ObjectId(req.params.id)})
         if(result.deletedCount === 1){
             res.sendStatus(204)
         } else {
             res.sendStatus(404)
         }
-
     } else {
         res.sendStatus(404)
     }
     //  SELECT id, name, description, webUrl FROM blogs
 
 }
-
-
 
 export async function createBlog(req: Request, res: Response) {
 

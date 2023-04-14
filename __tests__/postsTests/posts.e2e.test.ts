@@ -33,19 +33,12 @@ describe("TESTING OF CREATING POST BY ID", () => {
             "createdAt": expect.any(String),
             "shortDescription": "description",
             "title": "post title"})
-    })
-    /*it("should create post", async () => {
-        await request(app).delete("/testing/all-data").set(auth, basic)
-        const result = await request(app)
-            .post("/posts")
+
+        const foundPost = await request(app)
+            .get(`/posts/${result.body.id}`)
             .set(auth, basic)
-            .send({"content":"new",
-                "shortDescription":"description",
-                "title":"post",
-                "blogId":"64388d4e9a8e0932536af30e"})
-            .expect(400)
-        expect(result.body).toEqual([])
-    })*/
+            .expect(200)
+    })
 })
 
 
