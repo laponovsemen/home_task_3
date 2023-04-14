@@ -20,23 +20,6 @@ export async function getPostById(req: Request, res: Response) {
         res.sendStatus(404)
     }
 }
-/*export async function getBlogById(req: Request, res: Response) {
-    if(req.params.id) {
-
-        const mongoBlog = await blogsCollection
-            .findOne({_id: new ObjectId(req.params.id)},
-                {projection : {id : 1, name: 1,description: 1, websiteUrl: 1, isMembership: 1, createdAt: 1}})
-        if(mongoBlog){
-
-            res.status(200).send(mongoBlogSlicing(mongoBlog))
-        }else{
-            res.sendStatus(404)
-        }
-
-    } else {
-        res.sendStatus(404)
-    }
-}*/
 export async function getAllPosts(req: Request, res: Response) {
      const result = await client.db("forum").collection<PostViewModelType>("posts").find({}).toArray()
      res.status(200).send(result.map(post => mongoPostSlicing(post)))
