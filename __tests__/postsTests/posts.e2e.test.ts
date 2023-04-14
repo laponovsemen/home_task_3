@@ -6,7 +6,7 @@ export const auth = 'Authorization'
 export const basic = 'Basic YWRtaW46cXdlcnR5'
 
 //POSTS ROUTE
-describe("TESTING OF CREATING POST BY ID", () => {
+describe("TESTING OF CREATING POST", () => {
     it("should create post", async () => {
         await request(app).delete("/testing/all-data").set(auth, basic)
         const createdBlog = await request(app)
@@ -84,5 +84,83 @@ describe("TESTING OF UPDATING POST BY ID", () => {
                     { message: "the length of shortDescription field is more than 100 chars", field: "shortDescription" },
                     { message: "No blogs with such id in database", field: "blogId" }
                 ] })
+    })
+})
+
+describe("TESTING OF DELETING POST BY ID", () => {
+    it("should create post", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        const createdBlog = await request(app)
+            .post("/blogs")
+            .set(auth, basic)
+            .send({"name":"new blog",
+                "description":"description",
+                "websiteUrl":"https://github.com/",
+            })
+            .expect(201)
+        const blogId = createdBlog.body.id
+        const result = await request(app)
+            .post("/posts")
+            .set(auth, basic)
+            .send({"content":"new post content",
+                "shortDescription":"description",
+                "title":"post title",
+                "blogId":`${blogId}`})
+            .expect(201)
+        expect(result.body).toEqual({"id": expect.any(String),
+            "blogId": blogId,
+            "blogName": "new blog",
+            "content": "new post content",
+            "createdAt": expect.any(String),
+            "shortDescription": "description",
+            "title": "post title"})
+
+        const updatedPost = await request(app)
+            .delete(`/posts/${result.body.id}`)
+            .set(auth, basic)
+            .expect(204)
+
+    })
+})
+
+describe("TESTING OF READING POST BY ID", () => {
+    it("should create post", async () => {
+        await request(app).delete("/testing/all-data").set(auth, basic)
+        const createdBlog = await request(app)
+            .post("/blogs")
+            .set(auth, basic)
+            .send({"name":"new blog",
+                "description":"description",
+                "websiteUrl":"https://github.com/",
+            })
+            .expect(201)
+        const blogId = createdBlog.body.id
+        const result = await request(app)
+            .post("/posts")
+            .set(auth, basic)
+            .send({"content":"new post content",
+                "shortDescription":"description",
+                "title":"post title",
+                "blogId":`${blogId}`})
+            .expect(201)
+        expect(result.body).toEqual({"id": expect.any(String),
+            "blogId": blogId,
+            "blogName": "new blog",
+            "content": "new post content",
+            "createdAt": expect.any(String),
+            "shortDescription": "description",
+            "title": "post title"})
+
+        const foundPost = await request(app)
+            .get(`/posts/${result.body.id}`)
+            .set(auth, basic)
+            .expect(200)
+        expect(foundPost.body).toEqual({"id": expect.any(String),
+            "blogId": blogId,
+            "blogName": "new blog",
+            "content": "new post content",
+            "createdAt": expect.any(String),
+            "shortDescription": "description",
+            "title": "post title"})
     })
 })
