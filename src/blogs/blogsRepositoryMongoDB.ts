@@ -9,7 +9,6 @@ import {ObjectId} from "mongodb";
 export let blogsCollection = client.db("forum").collection<BlogViewModelType>("blogs")
 export async function getBlogById(req: Request, res: Response) {
      if(req.params.id) {
-        console.log(req.params.id)
         const mongoBlog = await blogsCollection
             .findOne({_id: new ObjectId(req.params.id)},
                 {projection : {id : 1, name: 1,description: 1, websiteUrl: 1, isMembership: 1, createdAt: 1}})

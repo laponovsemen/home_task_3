@@ -69,12 +69,12 @@ export async function updatePost(req: Request, res: Response) {
     const postToUpdate = await client.db("forum").collection("posts").findOne({_id: new ObjectId(req.params.id)})
     if (postToUpdate) {
         const updatedPost = {
-
-            name: req.body.name,
-            description: req.body.description,
-            websiteUrl: req.body.websiteUrl,
+            title: req.body.title,
             createdAt: postToUpdate.createdAt,
-            isMembership: postToUpdate.isMembership,
+            shortDescription : req.body.shortDescription,
+            blogId: postToUpdate.blogId,
+            blogName : postToUpdate.blogName,
+            content : req.body.content,
         }
         await client.db("forum").collection("posts").updateOne({_id: new ObjectId(req.params.id)},{$set: {updatedPost}})
         res.sendStatus(204)
