@@ -40,8 +40,13 @@ export async function getAllPosts(req: Request, res: Response) {
 }
 
 export async function deletePostById(req: Request, res: Response) {
-     const result = await client.db("forum").collection("posts").deleteOne({id : req.params.id})
-     res.status(204).send(result)
+    const deletedPost = await client.db("forum").collection("posts").deleteOne({_id: new ObjectId(req.params.id)})
+    if(deletedPost.deletedCount === 0){
+        res.sendStatus(404)
+    } else {
+        res.status(204)
+    }
+
 }
 
 export async function createPost(req: Request, res: Response) {
