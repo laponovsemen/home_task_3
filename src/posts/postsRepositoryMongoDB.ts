@@ -73,17 +73,17 @@ export async function createPost(req: Request, res: Response) {
 }
 
 export async function updatePost(req: Request, res: Response) {
-    const postToUpdate = await client.db("forum").collection("posts").findOne({id: req.params.id})
+    const postToUpdate = await client.db("forum").collection("posts").findOne({_id: new ObjectId(req.params.id)})
     if (postToUpdate) {
         const updatedPost = {
-            id: req.params.id,
+
             name: req.body.name,
             description: req.body.description,
             websiteUrl: req.body.websiteUrl,
             createdAt: postToUpdate.createdAt,
             isMembership: postToUpdate.isMembership,
         }
-        await client.db("forum").collection("posts").updateOne({"id": req.params.id},{$set: {updatedPost}})
+        await client.db("forum").collection("posts").updateOne({_id: new ObjectId(req.params.id)},{$set: {updatedPost}})
         res.status(204)
     } else {
         res.sendStatus(404)
