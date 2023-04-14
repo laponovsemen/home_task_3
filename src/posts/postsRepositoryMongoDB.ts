@@ -9,7 +9,7 @@ import {ObjectId} from "mongodb";
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
     if(blogId) {
-        const result = await client.db("forum").collection("posts").findOne({id: blogId})
+        const result = await client.db("forum").collection("posts").findOne({_id: new ObjectId(blogId)})
         res.status(200).send(result)
     } else {
         res.sendStatus(404)
