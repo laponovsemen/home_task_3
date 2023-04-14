@@ -5,6 +5,7 @@ import {client} from "../db";
 import {mongoBlogSlicing, mongoPostSlicing} from "../common";
 import {blogsCollection} from "../blogs/blogsRepositoryMongoDB";
 import {ObjectId} from "mongodb";
+import {validationResult} from "express-validator";
 
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
@@ -92,4 +93,24 @@ export async function updatePost(req: Request, res: Response) {
 
 export async function deleteAllPosts() {
     await client.db("forum").collection<PostViewModelType>("posts").deleteMany({})
+}
+
+export const PostValidationErrors = async (req: Request, res: Response, next: NextFunction) => {
+
+    const errors = validationResult(req)
+    const result = {
+        errorsMessages: errors.array().map(error => {
+            return {message: error.msg, field: error.param}
+        })
+    }
+
+    const blogId = await client.db("forum").collection<PostViewModelType>("blogs").find({_id : new ObjectId()})
+    if(blogId === null){
+        result.errorsMessages.push({message: "No blogs with such id in database", field: "blogId"})
+    }
+    if (!errors.isEmpty()) {
+        res.status(400).send(result)
+    } else {
+        next()
+    }
 }

@@ -32,6 +32,8 @@ export const ValidationErrors = (req: Request, res : Response, next : NextFuncti
     }
 }
 
+
+
 export const mongoBlogSlicing = ( Obj2: BlogViewModelType) =>  {
     return {
         id : Obj2._id,

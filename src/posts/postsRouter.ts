@@ -1,6 +1,13 @@
 import {Router} from 'express'
-import {createPost, deletePostById, getAllPosts, getPostById, updatePost} from "./postsRepositoryMongoDB";
-import {basicAuthGuardMiddleware, ValidationErrors} from "../common";
+import {
+    createPost,
+    deletePostById,
+    getAllPosts,
+    getPostById,
+    PostValidationErrors,
+    updatePost
+} from "./postsRepositoryMongoDB";
+import {basicAuthGuardMiddleware} from "../common";
 import {
     PostBlogIdValidation, PostContentValidation,
     PostShortDescriptionValidation,
@@ -8,9 +15,9 @@ import {
 } from "./postsValidator";
 
 export const postsRouter = Router({})
-const postDataValidation = [PostTitleValidation, PostShortDescriptionValidation, PostContentValidation, PostBlogIdValidation, ValidationErrors]
+const postDataValidation = [PostTitleValidation, PostShortDescriptionValidation, PostContentValidation, PostBlogIdValidation, PostValidationErrors]
 postsRouter.get("", getAllPosts)
 postsRouter.post("",basicAuthGuardMiddleware, postDataValidation,  createPost)
 postsRouter.get("/:id", getPostById)
-postsRouter.put("/:id",basicAuthGuardMiddleware,postDataValidation,  updatePost)
+postsRouter.put("/:id",basicAuthGuardMiddleware, postDataValidation,  updatePost)
 postsRouter.delete("/:id",basicAuthGuardMiddleware, deletePostById)
