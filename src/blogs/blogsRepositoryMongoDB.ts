@@ -81,7 +81,13 @@ export async function updateBlog(req: Request, res: Response) {
             createdAt: blogToUpdate.createdAt,
             isMembership: blogToUpdate.isMembership,
         }
-        await client.db("forum").collection("blogs").updateOne( { "id" : req.params.id },{ $set: {updatedBlog}})
+        await client.db("forum")
+            .collection("blogs")
+            .updateOne( { "id" : req.params.id },{ $set: {
+                    name : updatedBlog.name,
+                    description : updatedBlog.description,
+                    websiteUrl : updatedBlog.websiteUrl
+                }})
 
         res.status(204).send(updatedBlog)
     } else {

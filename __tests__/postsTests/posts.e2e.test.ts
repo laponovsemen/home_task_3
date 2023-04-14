@@ -109,7 +109,7 @@ describe("TESTING OF UPDATING POST BY ID", () => {
             .post("/posts")
             .set(auth, basic)
             .send({
-                "content": "new post content",
+                "content": "content",
                 "shortDescription": "description",
                 "title": "post title",
                 "blogId": `${blogId}`
@@ -119,7 +119,7 @@ describe("TESTING OF UPDATING POST BY ID", () => {
             "id": expect.any(String),
             "blogId": blogId,
             "blogName": "new blog",
-            "content": "new post content",
+            "content": "content",
             "createdAt": expect.any(String),
             "shortDescription": "description",
             "title": "post title"
@@ -145,7 +145,7 @@ describe("TESTING OF UPDATING POST BY ID", () => {
             blogName: "new blog",
             title: "title updated",
             content: "new post content",
-            blogId: blogId,
+            blogId: "63189b06003380064c4193be",
             shortDescription: "shortDescription after update",
             createdAt: expect.any(String)
         })

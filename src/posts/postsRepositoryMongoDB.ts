@@ -72,11 +72,18 @@ export async function updatePost(req: Request, res: Response) {
             title: req.body.title,
             createdAt: postToUpdate.createdAt,
             shortDescription : req.body.shortDescription,
-            blogId: postToUpdate.blogId,
+            blogId: req.body.blogId,
             blogName : postToUpdate.blogName,
             content : req.body.content,
         }
-        await client.db("forum").collection("posts").updateOne({_id: new ObjectId(req.params.id)},{$set: {updatedPost}})
+        await client.db("forum")
+            .collection("posts")
+            .updateOne({_id: new ObjectId(req.params.id)},
+                {$set: {title : updatedPost.title,
+                        shortDescription : updatedPost.shortDescription,
+                        blogId : updatedPost.blogId,
+                        content : updatedPost.content
+                    }})
         res.sendStatus(204)
     } else {
         res.sendStatus(404)
