@@ -83,7 +83,7 @@ export async function updateBlog(req: Request, res: Response) {
         }
         await client.db("forum")
             .collection("blogs")
-            .updateOne( { "id" : req.params.id },{ $set: {
+            .updateOne( { _id : new ObjectId(req.params.id) },{ $set: {
                     name : updatedBlog.name,
                     description : updatedBlog.description,
                     websiteUrl : updatedBlog.websiteUrl
