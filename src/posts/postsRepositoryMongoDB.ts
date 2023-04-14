@@ -10,8 +10,12 @@ import {validationResult} from "express-validator";
 export async function getPostById(req: Request, res: Response) {
     const blogId = req.params.id
     if(blogId) {
-        const result = await client.db("forum").collection("posts").findOne({_id: new ObjectId(blogId)})
-        res.status(200).send(result)
+        const result = await client.db("forum").collection<PostViewModelType>("posts").findOne({_id: new ObjectId(blogId)})
+        if(result) {
+            res.status(200).send(mongoPostSlicing(result))
+        } else {
+            res.sendStatus(404)
+        }
     } else {
         res.sendStatus(404)
     }
