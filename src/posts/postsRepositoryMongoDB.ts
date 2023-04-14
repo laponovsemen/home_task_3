@@ -88,7 +88,6 @@ export async function deleteAllPosts() {
 }
 
 export const PostValidationErrors = async (req: Request, res: Response, next: NextFunction) => {
-
     const errors = validationResult(req)
     const result = {
         errorsMessages: errors.array().map(error => {
@@ -96,8 +95,8 @@ export const PostValidationErrors = async (req: Request, res: Response, next: Ne
         })
     }
 
-    const blogId = await client.db("forum").collection<PostViewModelType>("blogs").find({_id : new ObjectId()})
-    if(blogId === null){
+    const foundBlog = await client.db("forum").collection<PostViewModelType>("blogs").findOne({_id : new ObjectId(req.body.blogId)})
+    if(foundBlog === null){
         result.errorsMessages.push({message: "No blogs with such id in database", field: "blogId"})
     }
     if (!errors.isEmpty()) {
